@@ -3,9 +3,11 @@ import pickle
 
 app = Flask(__name__)
 
-@app.route('/home', methods =['GET','POST'])
+@app.route('/index', methods =['GET','POST'])
 def index():
-    return 'starting machine learning project...'
+    return render_template('index.html')
+
+
 
 
 if __name__ == "__main__":

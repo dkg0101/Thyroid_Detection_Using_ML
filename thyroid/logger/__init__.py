@@ -6,7 +6,7 @@ import os
 LOG_FOLDER = 'thyroid_logs'
 os.makedirs(LOG_FOLDER,exist_ok=True)
 
-CURRENT_TIME_STAMP = f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%s')}"
+CURRENT_TIME_STAMP = f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
 
 
 LOG_FILE_NAME = f"log_{CURRENT_TIME_STAMP}.log"

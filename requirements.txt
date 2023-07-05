@@ -4,4 +4,5 @@ pandas
 flask
 numpy
 matplotlib
-# -e .
+dill
+-e .

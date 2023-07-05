@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import pickle
-from thyroid.logger import logging
+from src.logger import logging
 
 
 

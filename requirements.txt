@@ -3,4 +3,5 @@ gunicorn
 pandas
 flask
 numpy
--e .
+matplotlib
+# -e .

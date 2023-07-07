@@ -1,7 +1,7 @@
 import sys,os
 from src.logger import logging 
 from src.exception import CustomException
-from src.util import *
+from src.util.util import save_object
 import pandas as pd
 import numpy as np
 from dataclasses import dataclass
@@ -15,7 +15,7 @@ from sklearn.pipeline import Pipeline
 
 @dataclass
 class DataTransformationConfig:
-    preprocessor_obj_file_path = os.join('artifacts','preprocessor.pkl')
+    preprocessor_obj_file_path = os.path.join('artifacts','preprocessor.pkl')
 
 
 class DataTransformation:
@@ -86,13 +86,12 @@ class DataTransformation:
             target_feature_train_df = train_df[target_column_name]
 
 
-            input_feature_test_df = test_df.drop(columns=[target_column_name])
+            input_feature_test_df = test_df.drop(columns=[target_column_name],axis=1)
             target_feature_test_df = test_df[target_column_name]
 
-            logging.info(
-                f"Applying preprocessing object on training & testing dataframe "
-            )
-            input_feature_train_arr = preprocessing_obj.fit_transfomr(input_feature_train_df)
+            logging.info(f"Applying preprocessing object on training & testing dataframe ")
+            
+            input_feature_train_arr = preprocessing_obj.fit_transform(input_feature_train_df)
             input_feature_test_arr = preprocessing_obj.transform(input_feature_test_df)
 
             train_arr = np.c_[
@@ -111,7 +110,7 @@ class DataTransformation:
             return (
                 train_arr,
                 test_arr,
-                self.data_transformation_config.preprocessor_obj_file_path
+                self.data_transformation_config.preprocessor_obj_file_path,
             )
         
         except Exception as e :

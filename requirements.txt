@@ -1,8 +1,8 @@
-sklearn
+scikit-learn
 gunicorn
 pandas
 flask
 numpy
 matplotlib
 dill
--e .
+# -e .

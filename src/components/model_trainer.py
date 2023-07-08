@@ -36,9 +36,42 @@ class ModelTrainer:
                 "Support Vector Machine": SVC(),
                 "Decision Tree":DecisionTreeClassifier(),
                 "Random Forest": RandomForestClassifier()
-            }
+                }
+            
+            #defining parameters for differant models
+            params ={
+                "Logistic Regression":{
+                    'penalty':['none', 'l1', 'l2'],
+                    'C':[ 1.0, 0.1, 0.01]
+                },
 
-            model_report:dict = evaluate_models(X_train=X_train,y_train=y_train,X_test=X_test,y_test=y_test,models=models)
+                "K Nearest Neighbours":{ 
+                    'n_neighbors' : [5,7,9,11,13,15],
+                    'metric' : ['minkowski','euclidean','manhattan']
+                },
+
+                "Support Vector Machine":{
+                    'kernel': ['rbf', 'linear', 'sigmoid'],
+                    'C': [0.1,1, 10], 
+                    'gamma': [1,0.1,0.01]
+                },
+
+                "Decision Tree":{
+                    'max_depth':[3,5,7,10,15],
+                    'criterion':['gini','entropy']
+                },
+
+                "Random Forest": {
+                    'n_estimators': [25, 50, 100, 150],
+                    'max_features': ['sqrt', 'log2', None],
+                    'max_depth': [3, 5,7, 9]
+                }
+
+            }
+            
+
+            model_report:dict = evaluate_models(X_train=X_train,y_train=y_train,X_test=X_test,y_test=y_test,
+                                                models=models,param=params)
 
             #To get best model score from dict
             best_model_score = max(sorted(model_report.values()))
@@ -64,7 +97,7 @@ class ModelTrainer:
             predicted =best_model.predict(X_test)
             accuracy = accuracy_score(y_test,predicted)
 
-            logging.info("model training completed")
+            logging.info(f"model training completed and best model found is {best_model} with accuracy: {accuracy*100}%")
             return best_model,accuracy
 
 

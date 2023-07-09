@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> </title>
+    <title> </title>
+    <style>
+        body {
+            background-image: url("https://images.unsplash.com/photo-1598300188480-626f2f79ab8d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+
+<body>
+    <center>
+    <header>
+        Thyroid Detection Form 
+    </header><hr><br><br>
+
+    <form action="{{url_for('predict_data')}}" ,method='POST'>
+
+        Age:<input type="number" placeholder="Enter your Age" name="age"><br><br> 
+        Sex: 
+        <label for="GenderMale">
+        <input type="radio" value="Male" name="sex" id="GenderMale">Male
+        </label>
+        <label for="GenderFemale">
+        <input type="radio" value="Female"  name="sex" id="GenderFemale">Female
+        </label>
+        <br><br><br><br> 
+        TSH: <input type="number"><br><br><br> 
+        TT4: <input type="number"><br><br><br> 
+        T3 : <input type="number"><br><br><br> 
+        T4U: <input type="number"><br><br><br> 
+        <button type="submit">Submit</button>
+    </form>
+
+    </center>
+</body>
+
+</html>

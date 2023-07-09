@@ -1,12 +1,13 @@
 import sys,os
 from src.logger import logging 
 from src.exception import CustomException
-from src.util.util import save_object
+from src.util.util import *
 import pandas as pd
 import numpy as np
 from dataclasses import dataclass
 
-
+from sklearn.feature_selection import SelectKBest,chi2
+from sklearn.preprocessing import FunctionTransformer
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder,StandardScaler
@@ -15,7 +16,7 @@ from sklearn.pipeline import Pipeline
 
 @dataclass
 class DataTransformationConfig:
-    preprocessor_obj_file_path = os.path.join('artifacts','preprocessor.pkl')
+    preprocessor_obj_file_path = os.path.join('saved_models','preprocessor.pkl')
 
 
 class DataTransformation:
@@ -28,24 +29,33 @@ class DataTransformation:
         different types of data
         """
         try:
+            data_transformation_config = self.data_transformation_config
+
             numerical_columns = ['age', 'TSH', 'T3', 'TT4', 'T4U', 'FTI']
             categorical_columns =['sex', 'thyroxine', 'query_thyroxine', 'medication', 'sick', 'pregnant','surgery', 'I131_treatment', \
                                   'query_hypothyroid', 'query_hyperthyroid', 'lithium', 'goitre', 'tumor', 'hypopituitary', 'psych', 'referral_source'] 
-            
+           
 
             num_pipeline = Pipeline(
                 steps=[
-                    ("imputer",SimpleImputer(strategy="median")),
-                    ("scaler",StandardScaler())
+                    ("imputer",SimpleImputer(strategy="median"))
+                                        
                     ]
             )
+
+           
 
             cat_pipelline = Pipeline(
                 steps=[
                     ("imputer",SimpleImputer(strategy="most_frequent")),
                     ("one_hot_encoder",OneHotEncoder())
                 ]
+
+            
             )
+            
+            
+           
 
             logging.info(f"Numerical features are {numerical_columns}")
             logging.info(f"Categorical Columns are {categorical_columns}")
@@ -54,7 +64,8 @@ class DataTransformation:
             preprocessor = ColumnTransformer(
                 [
                     ('num_pipeline',num_pipeline,numerical_columns),
-                    ("cat_pipeline",cat_pipelline,categorical_columns)
+                    ("cat_pipeline",cat_pipelline,categorical_columns),
+                
                 ]
 
             )
@@ -68,19 +79,18 @@ class DataTransformation:
     def initiate_data_transformation(self,train_path,test_path):
 
         try:
+            data_transformation_config = self.data_transformation_config
             train_df = pd.read_csv(train_path)
             test_df = pd.read_csv(test_path)
 
-            logging.info("Read train and test data completed")
+            logging.info("Reading train and test data completed")
 
             logging.info("obtaining preprocessing object")
 
             preprocessing_obj = self.get_data_transformer_object()
 
             target_column_name = 'outcome'
-            numerical_columns = ['age', 'TSH', 'T3', 'TT4', 'T4U', 'FTI']
-            categorical_columns =['sex', 'thyroxine', 'query_thyroxine', 'medication', 'sick', 'pregnant','surgery', 'I131_treatment', \
-                                    'query_hypothyroid', 'query_hyperthyroid', 'lithium', 'goitre', 'tumor', 'hypopituitary', 'psych', 'referral_source']
+
             
             input_feature_train_df = train_df.drop(columns=[target_column_name],axis=1)
             target_feature_train_df = train_df[target_column_name]
@@ -103,14 +113,14 @@ class DataTransformation:
             logging.info(f"Saved preprocessing object.")
 
             save_object(
-                file_path = self.data_transformation_config.preprocessor_obj_file_path,
+                file_path = data_transformation_config.preprocessor_obj_file_path,
                 obj = preprocessing_obj
             )
 
             return (
                 train_arr,
                 test_arr,
-                self.data_transformation_config.preprocessor_obj_file_path,
+                data_transformation_config.preprocessor_obj_file_path,
             )
         
         except Exception as e :

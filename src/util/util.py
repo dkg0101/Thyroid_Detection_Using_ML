@@ -9,6 +9,9 @@ import dill
 from sklearn.metrics import (accuracy_score,roc_curve,roc_auc_score)
 from sklearn.model_selection import GridSearchCV
 
+from sklearn.pipeline import Pipeline
+from sklearn.base import BaseEstimator, TransformerMixin
+
 def save_object(file_path,obj):
     try:
         dir_path = os.path.dirname(file_path)
@@ -54,3 +57,9 @@ def evaluate_models(X_train,y_train,X_test,y_test,models,param):
 
     except Exception as e:
         raise CustomException(e,sys) from e
+    
+
+ 
+
+
+

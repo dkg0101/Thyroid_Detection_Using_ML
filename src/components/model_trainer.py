@@ -13,7 +13,7 @@ from dataclasses import dataclass
 
 @dataclass
 class ModelTrainerConfig:
-    trained_model_file_path = os.path.join("artifacts","model.pkl")
+    trained_model_file_path = os.path.join("saved_models","model.pkl")
 
 class ModelTrainer:
     def __init__(self):
@@ -57,14 +57,14 @@ class ModelTrainer:
                 },
 
                 "Decision Tree":{
-                    'max_depth':[3,5,7,10,15],
+                    'max_depth':[3,5,7,9],
                     'criterion':['gini','entropy']
                 },
 
                 "Random Forest": {
                     'n_estimators': [25, 50, 100, 150],
                     'max_features': ['sqrt', 'log2', None],
-                    'max_depth': [3, 5,7, 9]
+                    'max_depth': [3,5,7, 9]
                 }
 
             }
